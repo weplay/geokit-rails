@@ -54,9 +54,9 @@ module Geokit
         send :include, Geokit::Mappable
         
         # Handle class variables.
-        cattr_accessor :through
-        if self.through = options[:through]
-          if reflection = self.reflect_on_association(self.through)
+        cattr_accessor :acts_as_mappable_through
+        if self.acts_as_mappable_through = options[:through]
+          if reflection = self.reflect_on_association(self.acts_as_mappable_through)
             (class << self; self; end).instance_eval do
               [ :distance_column_name, :default_units, :default_formula, :lat_column_name, :lng_column_name, :qualified_lat_column_name, :qualified_lng_column_name ].each do |method_name|
                 define_method method_name do
@@ -212,9 +212,9 @@ module Geokit
         # conditionally adding to the select clause for finders.
         def prepare_for_find_or_count(action, args)
           options = args.extract_options!
+          original_options = options.dup
+          
           #options = defined?(args.extract_options!) ? args.extract_options! : extract_options_from_args!(args)
-          # Handle :through
-          apply_include_for_through(options)
           # Obtain items affecting distance condition.
           origin = extract_origin_from_options(options)
           units = extract_units_from_options(options)
@@ -231,6 +231,10 @@ module Geokit
           substitute_distance_in_conditions(options, origin, units, formula) if origin && options.has_key?(:conditions)
           # Order by scoping for find action.
           apply_find_scope(args, options) if action == :find
+
+          # Handle :through if necessary
+          apply_include_for_through(options) unless options == original_options
+
           # Unfortunatley, we need to do extra work if you use an :include. See the method for more info.
           handle_order_with_include(options,origin,units,formula) if options.include?(:include) && options.include?(:order) && origin
           # Restore options minus the extra options that we used for the
@@ -239,14 +243,14 @@ module Geokit
         end
         
         def apply_include_for_through(options)
-          if self.through
+          if self.acts_as_mappable_through
             case options[:include]
             when Array
-              options[:include] << self.through
+              options[:include] << self.acts_as_mappable_through
             when Hash, String, Symbol
-              options[:include] = [ self.through, options[:include] ]
+              options[:include] = [ self.acts_as_mappable_through, options[:include] ]
             else
-              options[:include] = self.through
+              options[:include] = self.acts_as_mappable_through
             end
           end
         end
