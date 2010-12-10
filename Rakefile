@@ -29,7 +29,7 @@ begin
     gem.description = %Q{Geo distance calculations, distance calculation query support, geocoding for physical and ip addresses}
     gem.authors = ["Bill Eisenhauer", "Andre Lewis"]
     gem.email = "andre@earthcode.com / bill_eisenhauer@yahoo.com"
-    gem.add_dependency "geokit-gem", "~> 1.2.5"
+    gem.add_dependency "geokit", "~> 1.2.5"
   end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"

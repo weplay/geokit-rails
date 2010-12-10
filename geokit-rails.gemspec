@@ -57,12 +57,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<geokit-gem>, ["~> 1.2.5"])
+      s.add_runtime_dependency(%q<geokit>, ["~> 1.2.5"])
     else
-      s.add_dependency(%q<geokit-gem>, ["~> 1.2.5"])
+      s.add_dependency(%q<geokit>, ["~> 1.2.5"])
     end
   else
-    s.add_dependency(%q<geokit-gem>, ["~> 1.2.5"])
+    s.add_dependency(%q<geokit>, ["~> 1.2.5"])
   end
 end
 
