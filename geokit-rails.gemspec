@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "geokit-rails.gemspec",
     "init.rb",
     "install.rb",
+    "lib/geokit-rails.rb",
     "lib/geokit-rails/acts_as_mappable.rb",
     "lib/geokit-rails/defaults.rb",
     "lib/geokit-rails/ip_geocode_lookup.rb",
